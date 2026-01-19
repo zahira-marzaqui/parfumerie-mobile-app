@@ -7,6 +7,8 @@ import '../../providers/auth_provider.dart';
 import '../../../data/repositories/cart_repository.dart';
 import '../../../core/utils/price_formatter.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_widget.dart';
 
@@ -78,8 +80,12 @@ class CartScreen extends ConsumerWidget {
                             : Container(
                                 width: 60,
                                 height: 60,
-                                color: Colors.grey[200],
-                                child: const Icon(Icons.image_not_supported),
+                                color: AppColors.backgroundCard,
+                                child: Icon(
+                                  Icons.image_not_supported,
+                                  color: AppColors.textSecondary,
+                                  size: 24,
+                                ),
                               ),
                         title: Text(product.name),
                         subtitle: Column(
@@ -88,7 +94,7 @@ class CartScreen extends ConsumerWidget {
                             Text('${variant.volumeMl}ml'),
                             Text(
                               PriceFormatter.format(unitPrice),
-                              style: Theme.of(context).textTheme.bodySmall,
+                              style: AppTextStyles.label,
                             ),
                           ],
                         ),
@@ -99,7 +105,10 @@ class CartScreen extends ConsumerWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.remove_circle_outline),
+                                  icon: Icon(
+                                    Icons.remove_circle_outline,
+                                    color: AppColors.goldPrimary,
+                                  ),
                                   onPressed: () async {
                                     final cartRepo = ref.read(cartRepositoryProvider);
                                     await cartRepo.updateCartItemQuantity(
@@ -111,7 +120,10 @@ class CartScreen extends ConsumerWidget {
                                 ),
                                 Text('${item.quantity}'),
                                 IconButton(
-                                  icon: const Icon(Icons.add_circle_outline),
+                                  icon: Icon(
+                                    Icons.add_circle_outline,
+                                    color: AppColors.goldPrimary,
+                                  ),
                                   onPressed: () async {
                                     final cartRepo = ref.read(cartRepositoryProvider);
                                     await cartRepo.updateCartItemQuantity(
@@ -125,13 +137,11 @@ class CartScreen extends ConsumerWidget {
                             ),
                             Text(
                               PriceFormatter.format(totalPrice),
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: AppTextStyles.priceSmall,
                             ),
                             IconButton(
                               icon: const Icon(Icons.delete_outline),
-                              color: Colors.red,
+                              color: AppColors.error,
                               onPressed: () async {
                                 final cartRepo = ref.read(cartRepositoryProvider);
                                 await cartRepo.removeFromCart(item.id);
@@ -149,65 +159,73 @@ class CartScreen extends ConsumerWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, -2),
+                  color: AppColors.backgroundCard,
+                  border: Border(
+                    top: BorderSide(
+                      color: AppColors.divider,
+                      width: 1,
                     ),
-                  ],
+                  ),
                 ),
                 child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Sous-total',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Sous-total',
+                              style: AppTextStyles.label.copyWith(
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            Text(
+                              PriceFormatter.format(cart.totalPrice),
+                              style: AppTextStyles.label.copyWith(
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
                         ),
-                        Text(
-                          PriceFormatter.format(cart.totalPrice),
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Frais de livraison',
+                              style: AppTextStyles.label.copyWith(
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                            Text(
+                              PriceFormatter.format(AppConstants.standardShippingFee),
+                              style: AppTextStyles.label.copyWith(
+                                fontSize: 14,
+                                color: AppColors.textPrimary,
+                              ),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Frais de livraison',
-                          style: Theme.of(context).textTheme.bodyLarge,
+                        const Divider(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Total',
+                              style: AppTextStyles.sectionTitle.copyWith(
+                                fontSize: 20,
+                              ),
+                            ),
+                            Text(
+                              PriceFormatter.format(
+                                cart.totalPrice + AppConstants.standardShippingFee,
+                              ),
+                              style: AppTextStyles.price,
+                            ),
+                          ],
                         ),
-                        Text(
-                          PriceFormatter.format(AppConstants.standardShippingFee),
-                          style: Theme.of(context).textTheme.bodyLarge,
-                        ),
-                      ],
-                    ),
-                    const Divider(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Total',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          PriceFormatter.format(
-                            cart.totalPrice + AppConstants.standardShippingFee,
-                          ),
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                        ),
-                      ],
-                    ),
                     const SizedBox(height: 16),
                     FilledButton(
                       onPressed: cart.allItemsInStock

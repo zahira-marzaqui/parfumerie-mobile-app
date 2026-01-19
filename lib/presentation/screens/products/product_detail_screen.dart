@@ -9,6 +9,8 @@ import '../../providers/favorite_provider.dart';
 import '../../../data/repositories/cart_repository.dart';
 import '../../../data/repositories/favorite_repository.dart';
 import '../../../core/utils/price_formatter.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 
@@ -154,27 +156,39 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           imageUrl: images.first,
                           fit: BoxFit.cover,
                           placeholder: (context, url) => Container(
-                            color: Colors.grey[200],
-                            child: const Center(
-                              child: CircularProgressIndicator(),
+                            color: AppColors.backgroundCard,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: AppColors.goldPrimary,
+                                strokeWidth: 2,
+                              ),
                             ),
                           ),
                           errorWidget: (context, url, error) => Container(
-                            color: Colors.grey[200],
-                            child: const Icon(Icons.image_not_supported),
+                            color: AppColors.backgroundCard,
+                            child: Icon(
+                              Icons.image_not_supported,
+                              color: AppColors.textSecondary,
+                            ),
                           ),
                         )
                       : Container(
-                          color: Colors.grey[200],
-                          child: const Icon(Icons.image_not_supported),
+                          color: AppColors.backgroundCard,
+                          child: Icon(
+                            Icons.image_not_supported,
+                            color: AppColors.textSecondary,
+                          ),
                         ),
                 ),
-                actions: [
-                  IconButton(
-                    icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
-                    onPressed: _toggleFavorite,
-                  ),
-                ],
+                    actions: [
+                      IconButton(
+                        icon: Icon(
+                          isFavorite ? Icons.favorite : Icons.favorite_border,
+                          color: isFavorite ? AppColors.goldPrimary : AppColors.textPrimary,
+                        ),
+                        onPressed: _toggleFavorite,
+                      ),
+                    ],
               ),
               SliverToBoxAdapter(
                 child: Padding(
@@ -187,23 +201,26 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                         style: Theme.of(context).textTheme.headlineSmall,
                       ),
                       const SizedBox(height: 8),
-                      Row(
-                        children: [
-                          if (product.rating != null) ...[
-                            Icon(Icons.star, size: 20, color: Colors.amber),
-                            const SizedBox(width: 4),
-                            Text(
-                              product.rating!.toStringAsFixed(1),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            const SizedBox(width: 16),
-                          ],
+                          Row(
+                            children: [
+                              if (product.rating != null) ...[
+                                Icon(
+                                  Icons.star,
+                                  size: 18,
+                                  color: AppColors.goldPrimary,
+                                ),
+                                const SizedBox(width: 4),
+                                Text(
+                                  product.rating!.toStringAsFixed(1),
+                                  style: AppTextStyles.label.copyWith(
+                                    color: AppColors.textSecondary,
+                                  ),
+                                ),
+                                const SizedBox(width: 16),
+                              ],
                           Text(
                             PriceFormatter.format(product.price),
-                            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: AppTextStyles.price,
                           ),
                         ],
                       ),
@@ -213,7 +230,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       if (product.variants.isNotEmpty) ...[
                         Text(
                           'Variantes',
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: AppTextStyles.label.copyWith(
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         Wrap(
@@ -238,23 +259,35 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       // Quantité
                       Text(
                         'Quantité',
-                        style: Theme.of(context).textTheme.titleMedium,
+                        style: AppTextStyles.label.copyWith(
+                          fontSize: 14,
+                          color: AppColors.textPrimary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Row(
                         children: [
                           IconButton(
-                            icon: const Icon(Icons.remove_circle_outline),
+                            icon: Icon(
+                              Icons.remove_circle_outline,
+                              color: AppColors.goldPrimary,
+                            ),
                             onPressed: _quantity > 1
                                 ? () => setState(() => _quantity--)
                                 : null,
                           ),
                           Text(
                             '$_quantity',
-                            style: Theme.of(context).textTheme.titleLarge,
+                            style: AppTextStyles.priceSmall.copyWith(
+                              fontSize: 20,
+                            ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add_circle_outline),
+                            icon: Icon(
+                              Icons.add_circle_outline,
+                              color: AppColors.goldPrimary,
+                            ),
                             onPressed: () => setState(() => _quantity++),
                           ),
                         ],
@@ -265,12 +298,16 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                       if (product.description != null) ...[
                         Text(
                           'Description',
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: AppTextStyles.label.copyWith(
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Text(
                           product.description!,
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: AppTextStyles.description,
                         ),
                         const SizedBox(height: 24),
                       ],
@@ -281,7 +318,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           product.baseNotes != null) ...[
                         Text(
                           'Notes',
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: AppTextStyles.label.copyWith(
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         if (product.topNotes != null)
@@ -299,7 +340,11 @@ class _ProductDetailScreenState extends ConsumerState<ProductDetailScreen> {
                           product.occasion != null) ...[
                         Text(
                           'Informations',
-                          style: Theme.of(context).textTheme.titleMedium,
+                          style: AppTextStyles.label.copyWith(
+                            fontSize: 14,
+                            color: AppColors.textPrimary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         if (product.concentration != null)
@@ -366,10 +411,10 @@ class _NoteRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-              notes,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            child:                             Text(
+                              notes,
+                              style: AppTextStyles.description,
+                            ),
           ),
         ],
       ),
@@ -402,10 +447,10 @@ class _InfoRow extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Text(
-              value,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
+            child:                             Text(
+                              value,
+                              style: AppTextStyles.description,
+                            ),
           ),
         ],
       ),

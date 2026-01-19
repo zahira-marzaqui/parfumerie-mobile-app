@@ -7,6 +7,8 @@ import '../../widgets/product_card.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/empty_widget.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 
 /// Écran d'accueil
 class HomeScreen extends ConsumerWidget {
@@ -49,35 +51,68 @@ class HomeScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Bannière (placeholder)
+              // Bannière luxe
               Container(
-                height: 200,
+                height: 220,
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Theme.of(context).colorScheme.primary,
-                      Theme.of(context).colorScheme.secondary,
-                    ],
-                  ),
-                ),
-                child: Center(
-                  child: Text(
-                    'Découvrez notre collection',
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      color: Colors.white,
+                  color: AppColors.backgroundCard,
+                  border: Border(
+                    bottom: BorderSide(
+                      color: AppColors.goldPrimary.withOpacity(0.3),
+                      width: 1,
                     ),
                   ),
+                ),
+                child: Stack(
+                  children: [
+                    // Overlay subtil
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            AppColors.goldPrimary.withOpacity(0.05),
+                            Colors.transparent,
+                          ],
+                        ),
+                      ),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              'Découvrez notre collection',
+                              style: AppTextStyles.sectionTitle.copyWith(
+                                fontSize: 28,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 8),
+                            Container(
+                              width: 60,
+                              height: 2,
+                              color: AppColors.goldPrimary,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 24),
               
               // Catégories rapides
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
                   'Catégories',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                 ),
               ),
               const SizedBox(height: 12),
@@ -117,17 +152,22 @@ class HomeScreen extends ConsumerWidget {
               
               // Top ventes
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Top ventes',
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                     ),
                     TextButton(
                       onPressed: () => context.push('/products?sort=top'),
-                      child: const Text('Voir tout'),
+                      child: Text(
+                        'Voir tout',
+                        style: AppTextStyles.label.copyWith(
+                          color: AppColors.goldPrimary,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -175,17 +215,22 @@ class HomeScreen extends ConsumerWidget {
               
               // Nouveautés
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'Nouveautés',
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                     ),
                     TextButton(
                       onPressed: () => context.push('/products?sort=newest'),
-                      child: const Text('Voir tout'),
+                      child: Text(
+                        'Voir tout',
+                        style: AppTextStyles.label.copyWith(
+                          color: AppColors.goldPrimary,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -307,17 +352,28 @@ class _CategoryChip extends StatelessWidget {
         width: 100,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          color: AppColors.backgroundCard,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: AppColors.divider,
+            width: 1,
+          ),
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 32),
+            Icon(
+              icon,
+              size: 28,
+              color: AppColors.goldPrimary,
+            ),
             const SizedBox(height: 8),
             Text(
               label,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: AppTextStyles.label.copyWith(
+                fontSize: 12,
+                color: AppColors.textPrimary,
+              ),
               textAlign: TextAlign.center,
             ),
           ],

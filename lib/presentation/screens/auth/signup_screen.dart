@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:email_validator/email_validator.dart';
 import '../../providers/auth_provider.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 
 /// Écran d'inscription
 class SignupScreen extends ConsumerStatefulWidget {
@@ -84,18 +86,21 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                 Icon(
                   Icons.person_add_outlined,
                   size: 80,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: AppColors.goldPrimary,
                 ),
                 const SizedBox(height: 32),
                 Text(
                   'Créer un compte',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 32),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Rejoignez-nous dès aujourd\'hui',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: AppTextStyles.description.copyWith(
+                    fontSize: 16,
+                    color: AppColors.textSecondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -198,13 +203,15 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.red[50],
+                      color: AppColors.error.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red[300]!),
+                      border: Border.all(color: AppColors.error),
                     ),
                     child: Text(
                       _errorMessage!,
-                      style: TextStyle(color: Colors.red[700]),
+                      style: AppTextStyles.description.copyWith(
+                        color: AppColors.error,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -215,12 +222,18 @@ class _SignupScreenState extends ConsumerState<SignupScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: _isLoading
-                      ? const SizedBox(
+                      ? SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.backgroundPrimary,
+                          ),
                         )
-                      : const Text('S\'inscrire'),
+                      : Text(
+                          'S\'INSCRIRE',
+                          style: AppTextStyles.button,
+                        ),
                 ),
                 const SizedBox(height: 16),
                 TextButton(

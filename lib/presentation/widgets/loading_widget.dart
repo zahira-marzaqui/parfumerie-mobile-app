@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/theme/text_styles.dart';
 
 /// Widget de chargement
 class LoadingWidget extends StatelessWidget {
@@ -12,12 +14,15 @@ class LoadingWidget extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CircularProgressIndicator(),
+          CircularProgressIndicator(
+            color: AppColors.goldPrimary,
+            strokeWidth: 2,
+          ),
           if (message != null) ...[
             const SizedBox(height: 16),
             Text(
               message!,
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: AppTextStyles.description,
             ),
           ],
         ],

@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import '../../providers/order_provider.dart';
 import '../../../core/utils/price_formatter.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
@@ -51,33 +53,38 @@ class OrdersScreen extends ConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Commande #${order.id.substring(0, 8)}',
-                                style: Theme.of(context).textTheme.titleMedium,
-                              ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                  vertical: 6,
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'Commande #${order.id.substring(0, 8)}',
+                                  style: AppTextStyles.productTitle.copyWith(fontSize: 16),
                                 ),
-                                decoration: BoxDecoration(
-                                  color: _getStatusColor(order.status),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: Text(
-                                  order.statusLabel,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 6,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: _getStatusColor(order.status).withOpacity(0.2),
+                                    borderRadius: BorderRadius.circular(16),
+                                    border: Border.all(
+                                      color: _getStatusColor(order.status),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    order.statusLabel,
+                                    style: TextStyle(
+                                      color: _getStatusColor(order.status),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      letterSpacing: 0.5,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
+                              ],
+                            ),
                           const SizedBox(height: 8),
                           if (order.createdAt != null)
                             Text(
@@ -90,22 +97,23 @@ class OrdersScreen extends ConsumerWidget {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                           const SizedBox(height: 8),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                'Total',
-                                style: Theme.of(context).textTheme.titleMedium,
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    'Total',
+                                    style: AppTextStyles.label.copyWith(
+                                      fontSize: 14,
+                                      color: AppColors.textPrimary,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                  Text(
+                                    PriceFormatter.format(order.totalWithShipping),
+                                    style: AppTextStyles.priceSmall,
+                                  ),
+                                ],
                               ),
-                              Text(
-                                PriceFormatter.format(order.totalWithShipping),
-                                style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ],
-                          ),
                         ],
                       ),
                     ),

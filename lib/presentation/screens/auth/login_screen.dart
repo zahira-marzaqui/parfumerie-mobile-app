@@ -5,6 +5,8 @@ import 'package:email_validator/email_validator.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/loading_widget.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 
 /// Écran de connexion
 class LoginScreen extends ConsumerStatefulWidget {
@@ -73,18 +75,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Icon(
                   Icons.lock_outline,
                   size: 80,
-                  color: Theme.of(context).colorScheme.primary,
+                  color: AppColors.goldPrimary,
                 ),
                 const SizedBox(height: 32),
                 Text(
                   'Bienvenue',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 32),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'Connectez-vous pour continuer',
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  style: AppTextStyles.description.copyWith(
+                    fontSize: 16,
+                    color: AppColors.textSecondary,
+                  ),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 32),
@@ -140,13 +145,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.red[50],
+                      color: AppColors.error.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.red[300]!),
+                      border: Border.all(color: AppColors.error),
                     ),
                     child: Text(
                       _errorMessage!,
-                      style: TextStyle(color: Colors.red[700]),
+                      style: AppTextStyles.description.copyWith(
+                        color: AppColors.error,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -157,12 +164,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     padding: const EdgeInsets.symmetric(vertical: 16),
                   ),
                   child: _isLoading
-                      ? const SizedBox(
+                      ? SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.backgroundPrimary,
+                          ),
                         )
-                      : const Text('Se connecter'),
+                      : Text(
+                          'SE CONNECTER',
+                          style: AppTextStyles.button,
+                        ),
                 ),
                 const SizedBox(height: 16),
                 TextButton(

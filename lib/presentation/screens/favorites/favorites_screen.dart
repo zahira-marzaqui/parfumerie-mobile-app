@@ -9,6 +9,7 @@ import '../../widgets/product_card.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
+import '../../../core/theme/app_theme.dart';
 
 /// Écran des favoris
 class FavoritesScreen extends ConsumerWidget {

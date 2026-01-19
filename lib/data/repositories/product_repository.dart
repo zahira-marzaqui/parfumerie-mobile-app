@@ -21,59 +21,87 @@ class ProductRepository {
     double? maxPrice,
     String? sortBy, // 'price_asc', 'price_desc', 'rating', 'newest'
   }) async {
-    var query = _supabase.from('products').select();
-    
-    // Filtres
-    if (searchQuery != null && searchQuery.isNotEmpty) {
-      query = query.ilike('name', '%$searchQuery%');
-    }
-    if (brandId != null) {
-      query = query.eq('brand_id', brandId);
-    }
-    if (categoryId != null) {
-      query = query.eq('category_id', categoryId);
-    }
-    if (concentration != null) {
-      query = query.eq('concentration', concentration);
-    }
-    if (minPrice != null) {
-      query = query.gte('price', minPrice);
-    }
-    if (maxPrice != null) {
-      query = query.lte('price', maxPrice);
-    }
-    
-    // Tri et pagination
-    String orderColumn = 'created_at';
-    bool ascending = false;
-    if (sortBy != null) {
-      switch (sortBy) {
-        case 'price_asc':
-          orderColumn = 'price';
-          ascending = true;
-          break;
-        case 'price_desc':
-          orderColumn = 'price';
-          ascending = false;
-          break;
-        case 'rating':
-          orderColumn = 'rating';
-          ascending = false;
-          break;
-        case 'newest':
-          orderColumn = 'created_at';
-          ascending = false;
-          break;
+    try {
+      var query = _supabase.from('products').select();
+      
+      // Filtres
+      if (searchQuery != null && searchQuery.isNotEmpty) {
+        query = query.ilike('name', '%$searchQuery%');
       }
+      if (brandId != null) {
+        query = query.eq('brand_id', brandId);
+      }
+      if (categoryId != null) {
+        query = query.eq('category_id', categoryId);
+      }
+      if (concentration != null) {
+        query = query.eq('concentration', concentration);
+      }
+      if (minPrice != null) {
+        query = query.gte('price', minPrice);
+      }
+      if (maxPrice != null) {
+        query = query.lte('price', maxPrice);
+      }
+      
+      // Tri
+      String orderColumn = 'id'; // Utiliser 'id' par défaut au lieu de 'created_at'
+      bool ascending = false;
+      if (sortBy != null) {
+        switch (sortBy) {
+          case 'price_asc':
+            orderColumn = 'price';
+            ascending = true;
+            break;
+          case 'price_desc':
+            orderColumn = 'price';
+            ascending = false;
+            break;
+          case 'rating':
+            orderColumn = 'rating';
+            ascending = false;
+            break;
+          case 'newest':
+            // Essayer created_at, sinon utiliser id
+            orderColumn = 'id';
+            ascending = false;
+            break;
+        }
+      }
+      
+      // Exécuter la requête avec tri et pagination
+      try {
+        final response = await query
+            .order(orderColumn, ascending: ascending)
+            .range(page * pageSize, (page + 1) * pageSize - 1);
+        
+        return (response as List)
+            .map((json) => ProductModel.fromJson(json))
+            .toList();
+      } catch (e) {
+        // Si la colonne de tri n'existe pas, essayer avec 'id'
+        if (orderColumn != 'id') {
+          try {
+            final fallbackResponse = await query
+                .order('id', ascending: false)
+                .range(page * pageSize, (page + 1) * pageSize - 1);
+            
+            return (fallbackResponse as List)
+                .map((json) => ProductModel.fromJson(json))
+                .toList();
+          } catch (_) {
+            // Si même 'id' ne fonctionne pas, retourner liste vide
+            return [];
+          }
+        }
+        // Si on était déjà sur 'id', retourner liste vide
+        return [];
+      }
+    } catch (e) {
+      // Si la table n'existe pas ou erreur, retourner une liste vide
+      print('Erreur lors de la récupération des produits: $e');
+      return [];
     }
-    
-    final response = await query
-        .order(orderColumn, ascending: ascending)
-        .range(page * pageSize, (page + 1) * pageSize - 1);
-    
-    return (response as List)
-        .map((json) => ProductModel.fromJson(json))
-        .toList();
   }
   
   /// Récupère un produit par ID avec ses relations
@@ -124,30 +152,56 @@ class ProductRepository {
   
   /// Récupère les produits top ventes
   Future<List<ProductModel>> getTopProducts({int limit = 10}) async {
-    final response = await _supabase
-        .from('products')
-        .select()
-        .eq('is_top', true)
-        .order('rating', ascending: false)
-        .limit(limit);
-    
-    return (response as List)
-        .map((json) => ProductModel.fromJson(json))
-        .toList();
+    try {
+      final response = await _supabase
+          .from('products')
+          .select()
+          .eq('is_top', true)
+          .order('rating', ascending: false)
+          .limit(limit);
+      
+      return (response as List)
+          .map((json) => ProductModel.fromJson(json))
+          .toList();
+    } catch (e) {
+      // Si la table n'existe pas ou erreur, retourner une liste vide
+      print('Erreur lors de la récupération des top produits: $e');
+      return [];
+    }
   }
   
   /// Récupère les nouveaux produits
   Future<List<ProductModel>> getNewProducts({int limit = 10}) async {
-    final response = await _supabase
-        .from('products')
-        .select()
-        .eq('is_new', true)
-        .order('created_at', ascending: false)
-        .limit(limit);
-    
-    return (response as List)
-        .map((json) => ProductModel.fromJson(json))
-        .toList();
+    try {
+      var query = _supabase
+          .from('products')
+          .select()
+          .eq('is_new', true);
+      
+      // Essayer avec created_at, sinon utiliser id
+      try {
+        final response = await query
+            .order('created_at', ascending: false)
+            .limit(limit);
+        
+        return (response as List)
+            .map((json) => ProductModel.fromJson(json))
+            .toList();
+      } catch (e) {
+        // Si created_at n'existe pas, utiliser id
+        final response = await query
+            .order('id', ascending: false)
+            .limit(limit);
+        
+        return (response as List)
+            .map((json) => ProductModel.fromJson(json))
+            .toList();
+      }
+    } catch (e) {
+      // Si la table n'existe pas ou erreur, retourner une liste vide
+      print('Erreur lors de la récupération des nouveaux produits: $e');
+      return [];
+    }
   }
   
   /// Récupère toutes les catégories

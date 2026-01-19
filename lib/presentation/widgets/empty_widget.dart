@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/theme/text_styles.dart';
 
 /// Widget pour état vide
 class EmptyWidget extends StatelessWidget {
@@ -22,13 +24,13 @@ class EmptyWidget extends StatelessWidget {
             Icon(
               icon,
               size: 64,
-              color: Colors.grey[400],
+              color: AppColors.textSecondary,
             ),
             const SizedBox(height: 16),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                color: Colors.grey[600],
+              style: AppTextStyles.description.copyWith(
+                fontSize: 16,
               ),
               textAlign: TextAlign.center,
             ),

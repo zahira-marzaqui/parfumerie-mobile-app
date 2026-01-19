@@ -5,6 +5,8 @@ import '../../providers/address_provider.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_widget.dart';
 import '../../widgets/error_widget.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 
 /// Écran de gestion des adresses
 class AddressesScreen extends ConsumerWidget {
@@ -51,16 +53,19 @@ class AddressesScreen extends ConsumerWidget {
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            context.push('/addresses/${address.id}/edit');
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          color: Colors.red,
-                          onPressed: () async {
+                                IconButton(
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: AppColors.goldPrimary,
+                                  ),
+                                  onPressed: () {
+                                    context.push('/addresses/${address.id}/edit');
+                                  },
+                                ),
+                                IconButton(
+                                  icon: const Icon(Icons.delete_outline),
+                                  color: AppColors.error,
+                                  onPressed: () async {
                             final confirmed = await showDialog<bool>(
                               context: context,
                               builder: (context) => AlertDialog(

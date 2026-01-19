@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import '../../providers/address_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../../data/models/address_model.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 
 /// Écran d'ajout/modification d'adresse
 class AddEditAddressScreen extends ConsumerStatefulWidget {
@@ -180,7 +182,14 @@ class _AddEditAddressScreenState extends ConsumerState<AddEditAddressScreen> {
                     _isDefault = value ?? false;
                   });
                 },
-                title: const Text('Définir comme adresse par défaut'),
+                activeColor: AppColors.goldPrimary,
+                title: Text(
+                  'Définir comme adresse par défaut',
+                  style: AppTextStyles.label.copyWith(
+                    fontSize: 14,
+                    color: AppColors.textPrimary,
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               FilledButton(
@@ -194,7 +203,10 @@ class _AddEditAddressScreenState extends ConsumerState<AddEditAddressScreen> {
                         width: 20,
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
-                    : Text(widget.addressId == null ? 'Enregistrer' : 'Modifier'),
+                    : Text(
+                        widget.addressId == null ? 'ENREGISTRER' : 'MODIFIER',
+                        style: AppTextStyles.button,
+                      ),
               ),
             ],
           ),

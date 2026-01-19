@@ -9,6 +9,8 @@ import '../../../data/repositories/cart_repository.dart';
 import '../../../data/repositories/order_repository.dart';
 import '../../../core/utils/price_formatter.dart';
 import '../../../core/constants/app_constants.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/empty_widget.dart';
 
@@ -125,7 +127,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 // Adresse
                 Text(
                   'Adresse de livraison',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                 ),
                 const SizedBox(height: 12),
                 addressesAsync.when(
@@ -184,7 +186,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 // Mode de livraison
                 Text(
                   'Mode de livraison',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                 ),
                 const SizedBox(height: 12),
                 Card(
@@ -224,7 +226,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 // Téléphone
                 Text(
                   'Téléphone',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                 ),
                 const SizedBox(height: 12),
                 TextField(
@@ -240,7 +242,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                 // Résumé
                 Text(
                   'Résumé',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: AppTextStyles.sectionTitle.copyWith(fontSize: 20),
                 ),
                 const SizedBox(height: 12),
                 Card(
@@ -317,12 +319,18 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     minimumSize: const Size(double.infinity, 0),
                   ),
                   child: _isLoading
-                      ? const SizedBox(
+                      ? SizedBox(
                           height: 20,
                           width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            color: AppColors.backgroundPrimary,
+                          ),
                         )
-                      : const Text('Confirmer la commande'),
+                      : Text(
+                          'CONFIRMER LA COMMANDE',
+                          style: AppTextStyles.button,
+                        ),
                 ),
                 const SizedBox(height: 16),
               ],

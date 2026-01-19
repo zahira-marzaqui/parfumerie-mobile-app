@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/auth_provider.dart';
 import '../../../data/repositories/auth_repository.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 import '../../widgets/loading_widget.dart';
 
 /// Écran de profil
@@ -59,20 +61,20 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                           const SizedBox(width: 16),
                           Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  user.fullName ?? 'Utilisateur',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                                if (user.phone != null)
+                            child:                               Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
                                   Text(
-                                    user.phone!,
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    user.fullName ?? 'Utilisateur',
+                                    style: AppTextStyles.productTitle.copyWith(fontSize: 18),
                                   ),
-                              ],
-                            ),
+                                  if (user.phone != null)
+                                    Text(
+                                      user.phone!,
+                                      style: AppTextStyles.description,
+                                    ),
+                                ],
+                              ),
                           ),
                         ],
                       ),
@@ -130,9 +132,13 @@ class ProfileScreen extends ConsumerWidget {
                   }
                 },
                 icon: const Icon(Icons.logout),
-                label: const Text('Déconnexion'),
+                label: Text(
+                  'DÉCONNEXION',
+                  style: AppTextStyles.button,
+                ),
                 style: FilledButton.styleFrom(
-                  backgroundColor: Colors.red,
+                  backgroundColor: AppColors.error,
+                  foregroundColor: AppColors.textPrimary,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
               ),

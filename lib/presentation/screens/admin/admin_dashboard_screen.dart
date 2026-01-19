@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../providers/order_provider.dart';
 import '../../../data/repositories/order_repository.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 import '../../widgets/loading_widget.dart';
 
 /// Écran de dashboard admin
@@ -36,7 +38,7 @@ class AdminDashboardScreen extends ConsumerWidget {
                 children: [
                   Text(
                     'Statistiques',
-                    style: Theme.of(context).textTheme.headlineSmall,
+                    style: AppTextStyles.sectionTitle.copyWith(fontSize: 22),
                   ),
                   const SizedBox(height: 16),
                   ordersAsync.when(
@@ -163,7 +165,7 @@ class _StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: color.withOpacity(0.1),
+      color: color.withValues(alpha: 0.1),
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

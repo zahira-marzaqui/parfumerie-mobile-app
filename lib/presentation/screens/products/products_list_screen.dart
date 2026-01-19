@@ -6,6 +6,8 @@ import '../../widgets/product_card.dart';
 import '../../widgets/loading_widget.dart';
 import '../../widgets/error_widget.dart';
 import '../../widgets/empty_widget.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/theme/text_styles.dart';
 
 /// Écran de liste des produits
 class ProductsListScreen extends ConsumerStatefulWidget {

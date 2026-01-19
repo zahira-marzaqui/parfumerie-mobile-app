@@ -8,7 +8,8 @@ plugins {
 android {
     namespace = "com.example.parfumerie_mobile_app"
     compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    // Laisser Flutter gérer automatiquement le NDK
+    // ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11

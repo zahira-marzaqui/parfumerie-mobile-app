@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../core/theme/app_theme.dart';
+import '../../core/theme/text_styles.dart';
 
 /// Widget d'erreur
 class ErrorDisplayWidget extends StatelessWidget {
@@ -22,12 +24,15 @@ class ErrorDisplayWidget extends StatelessWidget {
             Icon(
               Icons.error_outline,
               size: 64,
-              color: Colors.red[300],
+              color: AppColors.error,
             ),
             const SizedBox(height: 16),
             Text(
               message,
-              style: Theme.of(context).textTheme.bodyLarge,
+              style: AppTextStyles.description.copyWith(
+                fontSize: 16,
+                color: AppColors.textPrimary,
+              ),
               textAlign: TextAlign.center,
             ),
             if (onRetry != null) ...[
@@ -35,7 +40,10 @@ class ErrorDisplayWidget extends StatelessWidget {
               FilledButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text('Réessayer'),
+                label: Text(
+                  'RÉESSAYER',
+                  style: AppTextStyles.button,
+                ),
               ),
             ],
           ],
